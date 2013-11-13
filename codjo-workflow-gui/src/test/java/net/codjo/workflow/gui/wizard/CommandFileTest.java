@@ -22,7 +22,7 @@ public class CommandFileTest extends TestCase {
           + "ou externe, un programme ex‚cutable ou un fichier de commandes.\n";
     private DirectoryFixture fixture =
           new DirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
-    private File file = new File(fixture, "mycmd.cmd");
+    private File file;
     private CommandFile commandFile;
 
     private static final Logger LOGGER = Logger.getLogger(CommandFileTest.class);
@@ -133,6 +133,7 @@ public class CommandFileTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         LOGGER.info("setUp");
+        file = new File(fixture, "mycmd.cmd");
         fixture.doSetUp();
     }
 
