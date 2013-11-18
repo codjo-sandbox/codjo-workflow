@@ -20,13 +20,11 @@ public class CommandFileTest extends TestCase {
     private static final String UNKNOWN_COMMAND =
           "'commande' n'est pas reconnu en tant que commande interne\n"
           + "ou externe, un programme ex‚cutable ou un fichier de commandes.\n";
-    private DirectoryFixture fixture =
-          new DirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
+    private DirectoryFixture fixture;
     private File file;
     private CommandFile commandFile;
 
     private static final Logger LOGGER = Logger.getLogger(CommandFileTest.class);
-
 
 
     public void test_execute_withoutArgument() throws Exception {
@@ -133,6 +131,7 @@ public class CommandFileTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         LOGGER.info("setUp");
+        fixture = new DirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
         file = new File(fixture, "mycmd.cmd");
         fixture.doSetUp();
     }
@@ -144,14 +143,12 @@ public class CommandFileTest extends TestCase {
             file.delete();
             fixture.doTearDown();
             LOGGER.info("tearDown\n");
-
         }
         catch (NotDeletedException e) {
             // For spike purpose : Retry a new 10 times to delete the folder...
             Thread.sleep(1000);
             fixture.doTearDown();
             LOGGER.info("tearDown catch\n");
-
         }
     }
 
@@ -160,7 +157,7 @@ public class CommandFileTest extends TestCase {
         assertEquals(errorMessages, commandFile.getErrorMessage());
         assertNotNull(commandFile.getProcessMessage());
         assertTrue(commandFile.getProcessMessage().contains(processMessage));
-        LOGGER.info("ProcessMessage:"+commandFile.getProcessMessage());
+        LOGGER.info("ProcessMessage:" + commandFile.getProcessMessage());
     }
 
 
