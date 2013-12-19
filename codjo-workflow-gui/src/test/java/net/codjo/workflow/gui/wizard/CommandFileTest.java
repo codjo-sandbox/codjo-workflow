@@ -133,6 +133,7 @@ public class CommandFileTest extends TestCase {
         LOGGER.info("setUp");
         fixture = new DirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
         file = new File(fixture, "mycmd.cmd");
+        System.gc(); //try to fix erratic file deletion exception
         fixture.doSetUp();
     }
 
@@ -140,6 +141,7 @@ public class CommandFileTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         try {
+            System.gc(); //try to fix erratic file deletion exception
             file.delete();
             fixture.doTearDown();
             LOGGER.info("tearDown\n");
