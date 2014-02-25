@@ -7,7 +7,6 @@ package net.codjo.workflow.gui.wizard;
 import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
-import net.codjo.test.common.Directory;
 import net.codjo.test.common.Directory.NotDeletedException;
 import net.codjo.test.common.fixture.DirectoryFixture;
 import net.codjo.util.file.FileUtil;
@@ -132,7 +131,7 @@ public class CommandFileTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         LOGGER.info("setUp");
-        fixture = new HardDeleteDirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
+        fixture = new DirectoryFixture(findTargetDirectory(CommandFileTest.class) + "/CommandFileTestTEMPO");
         file = new File(fixture, "mycmd.cmd");
         System.gc(); //try to fix erratic file deletion exception
         fixture.doSetUp();
@@ -168,49 +167,5 @@ public class CommandFileTest extends TestCase {
           throws IOException {
         FileUtil.saveContent(file, fileContent);
         commandFile = new CommandFile(file);
-    }
-
-
-    /**
-     * Try to fix erratic error on directory deletion
-     */
-    private class HardDeleteDirectoryFixture extends DirectoryFixture {
-        private static final int DELETE_RETRY_SLEEP_MILLIS = 10;
-
-
-        public HardDeleteDirectoryFixture(String rootPath) {
-            super(rootPath);
-        }
-
-
-        @Override
-        public void deleteRecursively() throws NotDeletedException {
-            final File[] files = listFiles();
-            if (null != files) {
-                for (File file : files) {
-                    new Directory(file.getPath()).deleteRecursively();
-                }
-            }
-            tryHardToDelete(true);
-            if (exists()) {
-                throw new NotDeletedException(getPath());
-            }
-        }
-
-
-        public void tryHardToDelete(boolean runGC) {
-            if (!delete()) {
-                if (runGC) {
-                    System.gc();
-                }
-                try {
-                    Thread.sleep(DELETE_RETRY_SLEEP_MILLIS);
-                }
-                catch (InterruptedException ex) {
-                    // Ignore Exception
-                }
-                delete();
-            }
-        }
     }
 }
