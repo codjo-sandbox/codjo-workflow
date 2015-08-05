@@ -88,12 +88,11 @@ public class TaskManagerLogicTest {
                                       String.format("Job %s", jobIndex),
                                       state);
         job1.setDate(new Date());
-        job1.setInitiator("user_tr");
+        job1.setInitiator("s_focs_tr");
         job1.setDescription("description");
         return job1;
     }
 
-    
 
     public static void main(String[] args) throws ParseException {
         System.setProperty("sun.awt.noerasebackground", "true");
@@ -102,7 +101,7 @@ public class TaskManagerLogicTest {
 
         TaskManagerConfiguration configuration = TaskManagerLogicTest.createTaskManagerConfiguration();
         InternationalizationUtil.retrieveTranslationNotifier(configuration.getGuiContext()).setLanguage(Language.EN);
-        configuration.setUserLogin("user_tr");
+        configuration.setUserLogin("s_focs_tr");
         TaskManagerGui gui = new TaskManagerLogic(configuration, taskManagerModel).getGui();
         gui.setLocationRelativeTo(null);
         gui.setVisible(true);
