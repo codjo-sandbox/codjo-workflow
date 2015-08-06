@@ -1,7 +1,7 @@
 package net.codjo.workflow.server.handler;
+import java.util.regex.Pattern;
 import net.codjo.agent.AclMessage.Performative;
 import net.codjo.agent.Agent;
-import static net.codjo.agent.test.AgentAssert.log;
 import net.codjo.agent.test.OneShotStep;
 import net.codjo.mad.server.plugin.HandlerExecutor;
 import net.codjo.workflow.common.message.Arguments;
@@ -9,7 +9,8 @@ import net.codjo.workflow.common.message.JobAudit.Type;
 import net.codjo.workflow.common.util.ReplyWithJobAudit;
 import net.codjo.workflow.common.util.WorkflowSystem;
 import net.codjo.workflow.server.api.WorkflowTestCase;
-import java.util.regex.Pattern;
+
+import static net.codjo.agent.test.AgentAssert.log;
 /**
  *
  */
@@ -19,7 +20,7 @@ public class WorkflowHandlerExecutorFactoryTest extends WorkflowTestCase {
         final HandlerContextManager handlerContextManager = new HandlerContextManagerMock(log);
         final String xmlContent = "<requests>"
                                   + "    <audit>"
-                                  + "        <user>user_dev</user>"
+                                  + "        <user>s_focs_dev</user>"
                                   + "    </audit>"
                                   + "    <select request_id=\"1\">"
                                   + "        <id>selectQuery</id>"

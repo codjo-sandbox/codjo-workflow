@@ -1,9 +1,8 @@
 package net.codjo.workflow.server.api;
+import junit.framework.TestCase;
 import net.codjo.agent.AclMessage;
 import net.codjo.agent.Aid;
 import net.codjo.agent.MessageTemplate;
-import static net.codjo.agent.MessageTemplate.and;
-import static net.codjo.agent.MessageTemplate.matchPerformative;
 import net.codjo.agent.UserId;
 import net.codjo.agent.test.AssertMatchExpression;
 import net.codjo.agent.test.Story;
@@ -11,11 +10,13 @@ import net.codjo.test.common.LogString;
 import net.codjo.workflow.common.message.JobAudit;
 import net.codjo.workflow.common.message.JobRequest;
 import net.codjo.workflow.common.protocol.JobProtocol;
-import junit.framework.TestCase;
+
+import static net.codjo.agent.MessageTemplate.and;
+import static net.codjo.agent.MessageTemplate.matchPerformative;
 
 public abstract class WorkflowTestCase extends TestCase {
     protected Story story;
-    protected UserId userId = UserId.createId("user_dev", "secret");
+    protected UserId userId = UserId.createId("s_focs_dev", "secret");
     protected LogString log = new LogString();
 
 

@@ -4,6 +4,8 @@
  * Copyright (c) 2001 AGF Asset Management.
  */
 package net.codjo.workflow.server.leader;
+import java.io.File;
+import java.util.Date;
 import net.codjo.agent.AclMessage;
 import net.codjo.agent.AclMessage.Performative;
 import net.codjo.agent.Aid;
@@ -12,8 +14,6 @@ import net.codjo.agent.MessageTemplate;
 import net.codjo.agent.MessageTemplate.MatchExpression;
 import net.codjo.agent.protocol.SubscribeProtocol;
 import net.codjo.agent.test.AgentAssert;
-import static net.codjo.agent.test.AgentAssert.logAndClear;
-import static net.codjo.agent.test.MessageBuilder.message;
 import net.codjo.agent.test.Semaphore;
 import net.codjo.agent.test.StoryPart;
 import net.codjo.agent.test.TesterAgentRecorder;
@@ -22,8 +22,6 @@ import net.codjo.test.common.fixture.DirectoryFixture;
 import net.codjo.util.file.FileUtil;
 import net.codjo.workflow.common.Service;
 import net.codjo.workflow.common.message.JobAudit;
-import static net.codjo.workflow.common.message.JobAudit.Status;
-import static net.codjo.workflow.common.message.JobAudit.Type;
 import net.codjo.workflow.common.message.JobContract;
 import net.codjo.workflow.common.message.JobEvent;
 import net.codjo.workflow.common.message.JobException;
@@ -32,11 +30,14 @@ import net.codjo.workflow.common.protocol.JobProtocolParticipant;
 import net.codjo.workflow.server.api.JobAgent;
 import net.codjo.workflow.server.api.WorkflowTestCase;
 import net.codjo.workflow.server.audit.AuditDaoMock;
-import java.io.File;
-import java.util.Date;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.SimpleLayout;
+
+import static net.codjo.agent.test.AgentAssert.logAndClear;
+import static net.codjo.agent.test.MessageBuilder.message;
+import static net.codjo.workflow.common.message.JobAudit.Status;
+import static net.codjo.workflow.common.message.JobAudit.Type;
 /**
  * Classe de test de {@link JobLeaderAgent}.
  *
@@ -97,8 +98,8 @@ public class JobLeaderAgentTest extends WorkflowTestCase {
               .then()
               .play(new LaunchSuccessfulImport());
 
-        story.record().addAssert(AgentAssert.logAndClear(log, "agent.executeJob(import, uid:user_dev)"
-                                                              + ", agent.executeJob(import, uid:user_dev)"));
+        story.record().addAssert(AgentAssert.logAndClear(log, "agent.executeJob(import, uid:s_focs_dev)"
+                                                              + ", agent.executeJob(import, uid:s_focs_dev)"));
         story.execute();
     }
 
@@ -128,8 +129,8 @@ public class JobLeaderAgentTest extends WorkflowTestCase {
               .then()
               .play(new LaunchSuccessfulImport(loggableMessage));
 
-        story.record().addAssert(AgentAssert.logAndClear(log, "agent.executeJob(import, uid:user_dev)"
-                                                              + ", agent.executeJob(import, uid:user_dev)"));
+        story.record().addAssert(AgentAssert.logAndClear(log, "agent.executeJob(import, uid:s_focs_dev)"
+                                                              + ", agent.executeJob(import, uid:s_focs_dev)"));
         story.execute();
 
         assertEquals("INFO - Activation de l'ecoute de nouvelle requete" + NEW_LINE
@@ -161,7 +162,7 @@ public class JobLeaderAgentTest extends WorkflowTestCase {
 
         story.record().startTester("initiator").play(new LaunchSuccessfulImport());
 
-        story.record().addAssert(AgentAssert.logAndClear(log, "expert.executeJob(import, uid:user_dev)"));
+        story.record().addAssert(AgentAssert.logAndClear(log, "expert.executeJob(import, uid:s_focs_dev)"));
 
         story.execute();
     }
@@ -216,13 +217,13 @@ public class JobLeaderAgentTest extends WorkflowTestCase {
 
         story.record().startTester("initiator-1").play(new LaunchSuccessfulImport());
 
-        story.record().addAssert(logAndClear(log, "job1.executeJob(import, uid:user_dev)"));
+        story.record().addAssert(logAndClear(log, "job1.executeJob(import, uid:s_focs_dev)"));
 
         story.record().startTester("initiator-2").play(new LaunchSuccessfulImport())
               .then()
               .release(blockFirstJob);
 
-        story.record().addAssert(logAndClear(log, "job2.executeJob(import, uid:user_dev)"
+        story.record().addAssert(logAndClear(log, "job2.executeJob(import, uid:s_focs_dev)"
                                                   + ", job1.end of execute"));
 
         story.execute();
